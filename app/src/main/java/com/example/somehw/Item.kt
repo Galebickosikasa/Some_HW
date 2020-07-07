@@ -5,8 +5,6 @@ class Item {
 
     var name : String = ""
     var child : String = ""
-    var url : String = ""
-    var img : String = ""
 
     var title : String = ""
     var text : String = ""
@@ -14,17 +12,12 @@ class Item {
     var lang : String = ""
     var time : String = ""
 
-    constructor(type: Int, name: String, child: String, url: String, img: String) { // 0
+    constructor(type: Int, a: String, b: String) { // 0, 1, 2
         this.type = type
-        this.name = name
-        this.child = child
-        this.url = url
-        this.img = img
-    }
-
-    constructor(type: Int, a: String, b: String) { // 1, 2
-        this.type = type
-        if (type == 1) {
+        if (type == 0) {
+            this.name = a
+            this.child = b
+        } else if(type == 1) {
             this.title = a
             this.text = b
         } else {

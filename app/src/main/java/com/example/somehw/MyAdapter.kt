@@ -1,18 +1,23 @@
 package com.example.somehw
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import info.hoang8f.widget.FButton
 
-class MyAdapter : RecyclerView.Adapter<ViewHolder> {
+class MyAdapter (context: Context): RecyclerView.Adapter<ViewHolder>() {
     private var listItem : ArrayList<Item> = arrayListOf()
+    private val onGitClick : OnGitClick
 
-    constructor() : super()
+    interface OnGitClick {
+        fun onGitClick ()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater : LayoutInflater = LayoutInflater.from(parent.context)
@@ -39,46 +44,92 @@ class MyAdapter : RecyclerView.Adapter<ViewHolder> {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        when (listItem[position].type) {
+            0 -> {
+                val viewHolderZero = holder as ViewHolderZero
+                viewHolderZero.bind (listItem[position])
+            } 1 -> {
+                val viewHolderOne = holder as ViewHolderOne
+                viewHolderOne.bind(listItem[position])
+            } 2 -> {
+                val viewHolderTwo = holder as ViewHolderTwo
+                viewHolderTwo.bind(listItem[position])
+            }
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
         return listItem[position].type
     }
 
-    class ViewHolderZero : RecyclerView.ViewHolder {
-        private var image : ImageView
-        private var name : String
-        private var child : String
-        private var url : String
-        private lateinit var btn : Button
+    fun addItem (item: Item) {
+        listItem.add (item)
+        notifyItemChanged (itemCount - 1)
+    }
+
+    inner class ViewHolderZero : ViewHolder, View.OnClickListener {
+        var image : ImageView
+        var name : TextView
+        var child : TextView
+        var btn : Button
 
         constructor(itemView: View) : super(itemView) {
             image = itemView.findViewById (R.id.image)
             name = itemView.findViewById (R.id.name)
             child = itemView.findViewById (R.id.child)
             btn = itemView.findViewById(R.id.git) as FButton
-            url = "kek" // TODO
+        }
 
+        override fun onClick(v: View?) {
+            onGitClick.onGitClick ()
+        }
+
+        fun bind (item: Item) {
+            name.text = item.name
+            child.text = item.child
+            btn.setOnClickListener (this)
+        }
+    }
+
+    class ViewHolderOne : ViewHolder {
+        private var title : TextView
+        private var text : TextView
+
+        constructor(itemView: View) : super(itemView) {
+            title  = itemView.findViewById (R.id.title)
+            text = itemView.findViewById (R.id.text)
+        }
+
+        fun bind (item: Item) {
+            title.text = item.title
+            text.text = item.text
         }
 
     }
 
-    class ViewHolderOne : RecyclerView.ViewHolder {
+    class ViewHolderTwo : ViewHolder {
+        private var lang : TextView
+        private var time : TextView
+
+        constructor(itemView: View) : super(itemView) {
+            lang = itemView.findViewById (R.id.lang)
+            time = itemView.findViewById (R.id.time)
+        }
+
+        fun bind (item: Item) {
+            lang.text = item.lang
+            time.text = item.time
+        }
+
+    }
+
+    class ViewHolderThree : ViewHolder {
 
         constructor(itemView: View) : super(itemView)
 
     }
 
-    class ViewHolderTwo : RecyclerView.ViewHolder {
-
-        constructor(itemView: View) : super(itemView)
-
-    }
-
-    class ViewHolderThree : RecyclerView.ViewHolder {
-
-        constructor(itemView: View) : super(itemView)
-
+    init {
+        onGitClick = context as OnGitClick
     }
 }

@@ -1,6 +1,7 @@
 package com.example.somehw
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,15 +14,21 @@ import info.hoang8f.widget.FButton
 
 class MyAdapter (context: Context): RecyclerView.Adapter<ViewHolder>() {
     private var listItem : ArrayList<Item> = arrayListOf()
+    private var items : ArrayList<Item> = arrayListOf()
     private val onGitClick : OnGitClick
+    private val onFilterClick : OnFilterClick
 
     interface OnGitClick {
         fun onGitClick ()
     }
 
+    interface OnFilterClick {
+        fun onFilterClick ()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater : LayoutInflater = LayoutInflater.from(parent.context)
-        var view: View
+        val view: View
         return when (viewType) {
             0 -> {
                 view = layoutInflater.inflate (R.layout.holder_name, parent, false)
@@ -64,7 +71,30 @@ class MyAdapter (context: Context): RecyclerView.Adapter<ViewHolder>() {
 
     fun addItem (item: Item) {
         listItem.add (item)
+        items.add (item)
         notifyItemChanged (itemCount - 1)
+    }
+
+    private fun bit (msk: Int, i: Int) : Int {
+        return (msk shr i) and 1
+    }
+
+    fun filter (mask: Int) {
+        val kek : Map<String, Int> = mapOf ("2 года" to 1, "2.5 года" to 2, "1 год" to 1, "2 месяца" to 0, "полгода" to 0, "17 лет" to 0, "17 лет" to 2, "9999 лет" to 2)
+        listItem.clear ()
+        for (x in items) {
+            if (x.type != 2) {
+                listItem.add (x)
+                continue
+            }
+//            Log.e ("kek", x.toString())
+            val t = kek[x.time]
+//            Log.e ("kek", "time ${x.time} $t")
+            if (bit (mask, t!!) == 1) {
+                listItem.add (x)
+            }
+        }
+        notifyDataSetChanged ()
     }
 
     inner class ViewHolderZero : ViewHolder, View.OnClickListener {
@@ -120,16 +150,24 @@ class MyAdapter (context: Context): RecyclerView.Adapter<ViewHolder>() {
             lang.text = item.lang
             time.text = item.time
         }
-
     }
 
-    class ViewHolderThree : ViewHolder {
+    inner class ViewHolderThree : ViewHolder, View.OnClickListener {
+        private val filters : Button
 
-        constructor(itemView: View) : super(itemView)
+        override fun onClick(v: View?) {
+            onFilterClick.onFilterClick()
+        }
+
+        constructor (itemView: View) : super(itemView) {
+            filters = itemView.findViewById (R.id.filters)
+            filters.setOnClickListener (this)
+        }
 
     }
 
     init {
         onGitClick = context as OnGitClick
+        onFilterClick = context as OnFilterClick
     }
 }

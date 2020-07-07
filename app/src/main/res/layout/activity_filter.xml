@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FilterActivity">
+
+    <CheckBox
+        android:id="@+id/check_all"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:buttonTint="@color/purple"
+        android:text="Все"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/check_one"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:buttonTint="@color/purple"
+        android:text="&lt;1 года"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/check_all" />
+
+    <CheckBox
+        android:id="@+id/check_two"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:buttonTint="@color/purple"
+        android:text="1-2 года"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/check_one" />
+
+    <CheckBox
+        android:id="@+id/check_inf"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:buttonTint="@color/purple"
+        android:text="2-inf лет"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/check_two" />
+
+    <info.hoang8f.widget.FButton
+        android:id="@+id/done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="150dp"
+        android:text="Done"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:fButtonColor="@color/fbutton_color_sun_flower"
+        fbutton:shadowEnabled="true" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

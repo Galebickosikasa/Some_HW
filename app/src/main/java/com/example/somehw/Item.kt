@@ -30,4 +30,8 @@ class Item {
         this.type = type
     }
 
+    override fun toString(): String {
+        return "Item(type=$type, name='$name', child='$child', title='$title', text='$text', lang='$lang', time='$time')"
+    }
+
 }

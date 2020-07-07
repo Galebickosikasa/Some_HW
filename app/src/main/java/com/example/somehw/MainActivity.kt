@@ -1,13 +1,15 @@
 package com.example.somehw
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class MainActivity : AppCompatActivity(), MyAdapter.OnGitClick{
+class MainActivity : AppCompatActivity(), MyAdapter.OnGitClick, MyAdapter.OnFilterClick {
     private lateinit var recycler: RecyclerView
     private lateinit var adapter: MyAdapter
 
@@ -15,7 +17,7 @@ class MainActivity : AppCompatActivity(), MyAdapter.OnGitClick{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         recycler = findViewById (R.id.recycler_view)
-        val adapter = MyAdapter (this)
+        adapter = MyAdapter (this)
         recycler.adapter = adapter
         val llm = LinearLayoutManager (this)
         recycler.layoutManager = llm
@@ -43,10 +45,29 @@ class MainActivity : AppCompatActivity(), MyAdapter.OnGitClick{
         adapter.addItem (item8)
         adapter.addItem (item9)
         adapter.addItem (item10)
+
+        check ()
     }
 
     override fun onGitClick() {
         val browserIntent = Intent (Intent.ACTION_VIEW, Uri.parse("https://github.com/Galebickosikasa"))
         startActivity(browserIntent)
+    }
+
+    fun check () {
+        val sp = getSharedPreferences ("mask", Context.MODE_PRIVATE)
+        val mask = sp.getInt ("mask", 7)
+        adapter.filter (mask)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        check ()
+    }
+
+    override fun onFilterClick() {
+        val intent = Intent (Constants.FILTER_ACTIVITY_PATH)
+        startActivityForResult (intent, 1)
+//        Toast.makeText (this, "kek", Toast.LENGTH_SHORT).show ()
     }
 }
